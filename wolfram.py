@@ -6,7 +6,6 @@ def main():
     pygame.init()
 
     WIDTH, HEIGHT = 640, 640
-    ZOOM = 400
 
     display = pygame.display.set_mode((WIDTH, HEIGHT))
     clock = pygame.time.Clock()
@@ -16,7 +15,7 @@ def main():
     max_depth = HEIGHT // s_scl
 
     #30, 90, 110
-    rule = 90
+    rule = 54
 
     row = 0
     state = 1 << (board_width//2)
