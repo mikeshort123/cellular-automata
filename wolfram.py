@@ -51,8 +51,8 @@ def calc_next_state(rule, current_state, board_width):
 
     for i in range(board_width):
         pattern = (shifted_state >> i) & 7
-        case = ((rule >> pattern) & 1) << i
-        next_state += case
+        case = (rule >> pattern) & 1
+        next_state += case << i
 
     return next_state
 
