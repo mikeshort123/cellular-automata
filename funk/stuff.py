@@ -41,7 +41,7 @@ def check(state, x, y):
        else:
            return 0
     else:
-       if 2 <= total < 4:
+       if 3 <= total < 5:
            return 1
        else:
            return 0
@@ -50,18 +50,9 @@ def get_surrounded_total(state, x, y, radius = 1):
 
     total = 0
 
-    offsets = [
-        (1, 0),
-        (1, 1),
-        (0, 1),
-        (-1, 1),
-        (-1, 0),
-        (-1, -1),
-        (0, -1),
-        (1, -1)
-    ]
+    for dx in range(-radius, radius+1):
+        for dy in range(-radius, radius+1):
 
-    for dx, dy in offsets:
-        total += state[x+dx, y+dy]
+            total += state[x+dx, y+dy]
 
     return total
