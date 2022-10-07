@@ -56,3 +56,55 @@ def get_surrounded_total(state, x, y, radius = 1):
             total += state[x+dx, y+dy]
 
     return total
+
+class Rule:
+
+    def __init__(self, c):
+        self.c = c
+
+    def __call__(self, state, x, y, vars):
+
+        for w in self.c:
+            x = w(state, x, y, vars)
+            if x is not None:
+                return x
+
+class Iff:
+
+    def __init__(self, cond, tt, ff):
+        self.cond = cond
+        self.tt = tt
+        self.ff = ff
+
+    def __call__(self, state, x, y, vars):
+        if self.cond(vars):
+            self.tt(state, x, y, vars)
+        else:
+            self.ff(state, x, y, vars)
+
+def partA(state, x, y, vars):
+    vars['total'] = get_surrounded_total(state, x, y, radius = 1)
+
+def partB(state, x, y, vars):
+    if vars['value'] == 0:
+       if vars['total'] == 3:
+           return 1
+       else:
+           return 0
+    else:
+       if 3 <= vars['total'] < 5:
+           return 1
+       else:
+           return 0
+
+def make_update_function():
+    r = Rule([
+        partA,
+        partB
+    ])
+
+    def update(state, x, y):
+        vars = {'value' : state[x, y]}
+        return r(state, x, y, vars)
+
+    return update

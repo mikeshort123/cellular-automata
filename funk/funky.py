@@ -18,6 +18,8 @@ def main():
 
     running = False
 
+    update_function = stuff.make_update_function()
+
 
     while True:
         for event in pygame.event.get():
@@ -27,7 +29,7 @@ def main():
 
             if event.type == pygame.KEYDOWN:
                 if event.key == 32:
-                    state.update(stuff.check)
+                    state.update(update_function)
 
                 if event.key == 13:
                     running = not running
@@ -43,7 +45,7 @@ def main():
             state.state[x, y] = 0
 
         if running:
-            state.update(stuff.check)
+            state.update(update_function)
 
 
         for i in range(state.W):
