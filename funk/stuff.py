@@ -59,8 +59,8 @@ def get_surrounded_total(state, x, y, radius = 1):
 
 class Rule:
 
-    def __init__(self, c):
-        self.c = c
+    def __init__(self, *args):
+        self.c = args
 
     def __call__(self, state, x, y, vars):
 
@@ -78,30 +78,44 @@ class Iff:
 
     def __call__(self, state, x, y, vars):
         if self.cond(vars):
-            self.tt(state, x, y, vars)
+            return self.tt(state, x, y, vars)
         else:
-            self.ff(state, x, y, vars)
+            return self.ff(state, x, y, vars)
+
 
 def partA(state, x, y, vars):
     vars['total'] = get_surrounded_total(state, x, y, radius = 1)
 
-def partB(state, x, y, vars):
-    if vars['value'] == 0:
-       if vars['total'] == 3:
-           return 1
-       else:
-           return 0
-    else:
-       if 3 <= vars['total'] < 5:
-           return 1
-       else:
-           return 0
 
 def make_update_function():
-    r = Rule([
+    r = Rule(
         partA,
-        partB
-    ])
+        Iff(
+            lambda vars : vars['value'] == 0,
+            Rule(
+                Iff(
+                    lambda vars : vars['total'] == 3,
+                    Rule(
+                        lambda state, x, y, vars : 1
+                    ),
+                    Rule(
+                        lambda state, x, y, vars : 0
+                    )
+                )
+            ),
+            Rule(
+                Iff(
+                    lambda vars : 3 <= vars['total'] < 5,
+                    Rule(
+                        lambda state, x, y, vars : 1
+                    ),
+                    Rule(
+                        lambda state, x, y, vars : 0
+                    )
+                ),
+            )
+        )
+    )
 
     def update(state, x, y):
         vars = {'value' : state[x, y]}
