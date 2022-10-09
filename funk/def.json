@@ -1,0 +1,52 @@
+{
+  "type" : "Sequence",
+  "stuff" : [
+
+    {
+      "type" : "PartA",
+      "radius" : 1
+    },
+
+    {
+      "type" : "Iff",
+      "condition" : {
+        "var" : "value",
+        "lower" : 0,
+        "upper" : 1
+      },
+      "tt" : {
+        "type" : "Iff",
+        "condition" : {
+          "var" : "total",
+          "lower" : 3,
+          "upper" : 4
+        },
+        "tt" : {
+          "type" : "Return",
+          "value" : 1
+        },
+        "ff" : {
+          "type" : "Return",
+          "value" : 0
+        }
+      },
+      "ff" : {
+        "type" : "Iff",
+        "condition" : {
+          "var" : "total",
+          "lower" : 3,
+          "upper" : 5
+        },
+        "tt" : {
+          "type" : "Return",
+          "value" : 1
+        },
+        "ff" : {
+          "type" : "Return",
+          "value" : 0
+        }
+      }
+    }
+
+  ]
+}

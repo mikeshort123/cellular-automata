@@ -1,4 +1,5 @@
 import numpy as np
+import json
 
 class Grid:
 
@@ -57,10 +58,19 @@ def get_surrounded_total(state, x, y, radius = 1):
 
     return total
 
-class Rule:
+def json_to_object(data):
+    m = {
+        "PartA" : PartA,
+        "Sequence" : Sequence,
+        "Iff" : Iff,
+        "Return" : Return
+    }
+    return m[data['type']].build_from_json(data)
 
-    def __init__(self, *args):
-        self.c = args
+class Sequence:
+
+    def __init__(self, stuff):
+        self.c = stuff
 
     def __call__(self, state, x, y, vars):
 
@@ -69,7 +79,30 @@ class Rule:
             if x is not None:
                 return x
 
+    @staticmethod
+    def build_from_json(data):
+        l = [json_to_object(item) for item in data['stuff']]
+        return Sequence(l)
+
+
 class Iff:
+
+    class Condition:
+
+        def __init__(self, var, lower, upper):
+            self.var = var
+            self.lower = lower
+            self.upper = upper
+
+        def __call__(self, vars):
+            return self.lower <= vars[self.var] < self.upper
+
+        @staticmethod
+        def build_from_json(data):
+            var = data['var']
+            lower = data['lower']
+            upper = data['upper']
+            return Iff.Condition(var, lower, upper)
 
     def __init__(self, cond, tt, ff):
         self.cond = cond
@@ -82,40 +115,62 @@ class Iff:
         else:
             return self.ff(state, x, y, vars)
 
+    @staticmethod
+    def build_from_json(data):
+        cond = Iff.Condition.build_from_json(data['condition'])
+        tt = json_to_object(data['tt'])
+        ff = json_to_object(data['ff'])
+        return Iff(cond, tt, ff)
 
-def partA(state, x, y, vars):
-    vars['total'] = get_surrounded_total(state, x, y, radius = 1)
+class Return:
+
+    def __init__(self, value):
+        self.value = value
+
+    def __call__(self, state, x, y, vars):
+        return self.value
+
+    @staticmethod
+    def build_from_json(data):
+        value = data['value']
+        return Return(value)
+
+class PartA:
+
+    def __init__(self, radius):
+        self.radius = radius
+
+    def __call__(self, state, x, y, vars):
+        vars['total'] = get_surrounded_total(state, x, y, radius = self.radius)
+
+    @staticmethod
+    def build_from_json(data):
+        radius = data['radius']
+        return PartA(radius)
 
 
 def make_update_function():
-    r = Rule(
-        partA,
-        Iff(
-            lambda vars : vars['value'] == 0,
-            Rule(
-                Iff(
-                    lambda vars : vars['total'] == 3,
-                    Rule(
-                        lambda state, x, y, vars : 1
-                    ),
-                    Rule(
-                        lambda state, x, y, vars : 0
-                    )
-                )
-            ),
-            Rule(
-                Iff(
-                    lambda vars : 3 <= vars['total'] < 5,
-                    Rule(
-                        lambda state, x, y, vars : 1
-                    ),
-                    Rule(
-                        lambda state, x, y, vars : 0
-                    )
-                ),
-            )
-        )
-    )
+
+    #r = Sequence([
+    #    PartA(1),
+    #    Iff(
+    #        lambda vars : vars['value'] == 0,
+    #        Iff(
+    #            lambda vars : vars['total'] == 3,
+    #            Return(1),
+    #            Return(0)
+    #        ),
+    #        Iff(
+    #            lambda vars : 3 <= vars['total'] < 5,
+    #            Return(1),
+    #            Return(0)
+    #        )
+    #    )
+    #])
+
+    with open("def.json") as f:
+        data = json.load(f)
+    r = json_to_object(data)
 
     def update(state, x, y):
         vars = {'value' : state[x, y]}
