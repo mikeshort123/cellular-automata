@@ -2,7 +2,7 @@ import pygame, sys
 
 from src.utils.handler import Handler
 from src.utils.renderer import Renderer
-from src.windows.tile_window import TileWindow
+from src.windows.tileWindow import TileWindow
 
 def main():
     game = Main(640,480)

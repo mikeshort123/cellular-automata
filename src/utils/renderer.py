@@ -5,6 +5,7 @@ class Renderer():
     def __init__(self, w, h):
 
         self.generate_screen(w, h)
+        self.font = pygame.font.Font('freesansbold.ttf', 32)
 
 
     def generate_screen(self, w, h):
