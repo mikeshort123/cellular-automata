@@ -1,0 +1,207 @@
+{
+  "type" : "Sequence",
+  "stuff" : [
+    {
+      "type" : "PartA",
+      "radius" : 0
+    },
+    {
+      "type" : "Iff",
+      "condition" : {
+        "var" : "total",
+        "lower" : 0,
+        "upper" : 1
+      },
+      "tt" : {
+        "type" : "Step",
+        "dx" : -1,
+        "dy" : -1,
+        "sub" : {
+          "type" : "Sequence",
+          "stuff" : [
+            {
+              "type" : "PartA",
+              "radius" : 0
+            },
+            {
+              "type" : "Iff",
+              "condition" : {
+                "var" : "total",
+                "lower" : 0,
+                "upper" : 1
+              },
+              "tt" : {
+                "type" : "Step",
+                "dx" : 1,
+                "dy" : 0,
+                "sub" : {
+                  "type" : "Sequence",
+                  "stuff" : [
+                    {
+                      "type" : "PartA",
+                      "radius" : 0
+                    },
+                    {
+                      "type" : "Iff",
+                      "condition" : {
+                        "var" : "total",
+                        "lower" : 0,
+                        "upper" : 1
+                      },
+                      "tt" : {
+                        "type" : "Step",
+                        "dx" : 1,
+                        "dy" : 0,
+                        "sub" : {
+                          "type" : "Sequence",
+                          "stuff" : [
+                            {
+                              "type" : "PartA",
+                              "radius" : 0
+                            },
+                            {
+                              "type" : "Iff",
+                              "condition" : {
+                                "var" : "total",
+                                "lower" : 0,
+                                "upper" : 1
+                              },
+                              "tt" : {
+                                "type" : "Return",
+                                "value" : 0
+                              },
+                              "ff" : {
+                                "type" : "Return",
+                                "value" : 1
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      "ff" : {
+                        "type" : "Step",
+                        "dx" : 1,
+                        "dy" : 0,
+                        "sub" : {
+                          "type" : "Sequence",
+                          "stuff" : [
+                            {
+                              "type" : "PartA",
+                              "radius" : 0
+                            },
+                            {
+                              "type" : "Iff",
+                              "condition" : {
+                                "var" : "total",
+                                "lower" : 0,
+                                "upper" : 1
+                              },
+                              "tt" : {
+                                "type" : "Return",
+                                "value" : 0
+                              },
+                              "ff" : {
+                                "type" : "Return",
+                                "value" : 1
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "ff" : {
+                "type" : "Step",
+                "dx" : 1,
+                "dy" : 0,
+                "sub" : {
+                  "type" : "Sequence",
+                  "stuff" : [
+                    {
+                      "type" : "PartA",
+                      "radius" : 0
+                    },
+                    {
+                      "type" : "Iff",
+                      "condition" : {
+                        "var" : "total",
+                        "lower" : 0,
+                        "upper" : 1
+                      },
+                      "tt" : {
+                        "type" : "Step",
+                        "dx" : 1,
+                        "dy" : 0,
+                        "sub" : {
+                          "type" : "Sequence",
+                          "stuff" : [
+                            {
+                              "type" : "PartA",
+                              "radius" : 0
+                            },
+                            {
+                              "type" : "Iff",
+                              "condition" : {
+                                "var" : "total",
+                                "lower" : 0,
+                                "upper" : 1
+                              },
+                              "tt" : {
+                                "type" : "Return",
+                                "value" : 1
+                              },
+                              "ff" : {
+                                "type" : "Return",
+                                "value" : 0
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      "ff" : {
+                        "type" : "Step",
+                        "dx" : 1,
+                        "dy" : 0,
+                        "sub" : {
+                          "type" : "Sequence",
+                          "stuff" : [
+                            {
+                              "type" : "PartA",
+                              "radius" : 0
+                            },
+                            {
+                              "type" : "Iff",
+                              "condition" : {
+                                "var" : "total",
+                                "lower" : 0,
+                                "upper" : 1
+                              },
+                              "tt" : {
+                                "type" : "Return",
+                                "value" : 1
+                              },
+                              "ff" : {
+                                "type" : "Return",
+                                "value" : 0
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      },
+      "ff" : {
+        "type" : "Return",
+        "value" : 1
+      }
+    }
+  ]
+}

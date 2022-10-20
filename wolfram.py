@@ -15,7 +15,7 @@ def main():
     max_depth = HEIGHT // s_scl
 
     #30, 90, 110
-    rule = 54
+    rule = 90
 
     row = 0
     state = 1 << (board_width//2)

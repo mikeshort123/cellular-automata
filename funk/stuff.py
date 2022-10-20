@@ -63,7 +63,8 @@ def json_to_object(data):
         "PartA" : PartA,
         "Sequence" : Sequence,
         "Iff" : Iff,
-        "Return" : Return
+        "Return" : Return,
+        "Step" : Step
     }
     return m[data['type']].build_from_json(data)
 
@@ -75,9 +76,9 @@ class Sequence:
     def __call__(self, state, x, y, vars):
 
         for w in self.c:
-            x = w(state, x, y, vars)
-            if x is not None:
-                return x
+            v = w(state, x, y, vars)
+            if v is not None:
+                return v
 
     @staticmethod
     def build_from_json(data):
@@ -148,27 +149,28 @@ class PartA:
         radius = data['radius']
         return PartA(radius)
 
+class Step:
+
+    def __init__(self, dx, dy, sub):
+        self.dx = dx
+        self.dy = dy
+        self.sub = sub
+
+    def __call__(self, state, x, y, vars):
+        return self.sub(state, x+self.dx, y+self.dy, vars)
+
+    @staticmethod
+    def build_from_json(data):
+        dx = data['dx']
+        dy = data['dy']
+        sub = json_to_object(data['sub'])
+        return Step(dx, dy, sub)
+
 
 def make_update_function():
 
-    #r = Sequence([
-    #    PartA(1),
-    #    Iff(
-    #        lambda vars : vars['value'] == 0,
-    #        Iff(
-    #            lambda vars : vars['total'] == 3,
-    #            Return(1),
-    #            Return(0)
-    #        ),
-    #        Iff(
-    #            lambda vars : 3 <= vars['total'] < 5,
-    #            Return(1),
-    #            Return(0)
-    #        )
-    #    )
-    #])
 
-    with open("def.json") as f:
+    with open("def2.json") as f:
         data = json.load(f)
     r = json_to_object(data)
 
