@@ -2,6 +2,12 @@ from abc import ABC, abstractmethod
 
 class Tile(ABC):
 
+    BLANK_SLOT_W = 16
+    BLANK_SLOT_H = 32
+
+    PADDING = 5
+    PADDING_2 = PADDING * 2
+
 
     @abstractmethod
     def render(self, renderer, x, y):

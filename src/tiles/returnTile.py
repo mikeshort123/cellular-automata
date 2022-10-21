@@ -2,29 +2,27 @@ import pygame
 
 from .tile import Tile
 from src.stuff.tileSlot import TileSlot
+from src.utils.renderer import Renderer
 
 class Return(Tile):
 
-    TEXT_LENGTH = 145
-
     def __init__(self):
-        self.slot = TileSlot(
-            16,
-            32,
-            (0, 180, 180)
-        )
+        self.slot = TileSlot(Tile.BLANK_SLOT_W, Tile.BLANK_SLOT_H, (0, 180, 180))
+
+        self.words = Renderer.font.render('RETURN', True, (0, 0, 0))
 
     def render(self, renderer, x, y):
 
+        mp = self.get_height()//2
+
         pygame.draw.rect(renderer.display, (0,255,255), (x, y, self.get_width(), self.get_height()))
 
-        words = renderer.font.render('RETURN', True, (0, 0, 0))
-        renderer.display.blit(words, (x + 5, y + 5))
+        renderer.display.blit(self.words, (x + Tile.PADDING, y + mp - self.words.get_height()//2))
 
-        self.slot.render(renderer, x+Return.TEXT_LENGTH, y+5)
+        self.slot.render(renderer, x+self.words.get_width()+Tile.PADDING_2, y + mp - self.slot.get_height()//2)
 
     def get_width(self):
-        return 10 + Return.TEXT_LENGTH + self.slot.get_width()
+        return Tile.PADDING * 3 + self.words.get_width() + self.slot.get_width()
 
     def get_height(self):
-        return 42
+        return Tile.PADDING_2 + self.slot.get_height()
