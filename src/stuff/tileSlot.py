@@ -1,4 +1,4 @@
-import pygame
+from src.utils.renderer import Renderer
 
 class TileSlot:
 
@@ -11,11 +11,13 @@ class TileSlot:
         self.tile = None
 
 
-    def render(self, renderer, x, y):
+    def render(self):
         if self.tile:
-            self.tile.render(renderer, x, y)
+            return self.tile.render()
         else:
-            pygame.draw.rect(renderer.display, self.c, (x, y, self.w, self.h))
+            surface = Renderer.make_surface(self.w, self.h)
+            surface.fill(self.c)
+            return surface
 
 
     def get_width(self):

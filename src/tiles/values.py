@@ -1,5 +1,3 @@
-import pygame
-
 from .tile import Tile
 from src.stuff.tileSlot import TileSlot
 from src.utils.renderer import Renderer
@@ -11,10 +9,14 @@ class Const(Tile):
 
         self.words = Renderer.font.render(str(self.value), True, (0, 0, 0))
 
-    def render(self, renderer, x, y):
+    def render(self):
 
-        pygame.draw.rect(renderer.display, (0,120,255), (x, y, self.get_width(), self.get_height()))
-        renderer.display.blit(self.words, (x+Tile.PADDING, y))
+        surface = Renderer.make_surface(self.get_width(), self.get_height())
+
+        surface.fill((0,120,255))
+        surface.blit(self.words, (Tile.PADDING, 0))
+
+        return surface
 
     def get_width(self):
         return Tile.PADDING_2 + self.words.get_width()
@@ -28,10 +30,14 @@ class Value(Tile):
     def __init__(self):
         self.words = Renderer.font.render('VALUE', True, (0, 0, 0))
 
-    def render(self, renderer, x, y):
+    def render(self):
 
-        pygame.draw.rect(renderer.display, (170,0,210), (x, y, self.get_width(), self.get_height()))
-        renderer.display.blit(self.words, (x+Tile.PADDING, y))
+        surface = Renderer.make_surface(self.get_width(), self.get_height())
+
+        surface.fill((170,0,210))
+        surface.blit(self.words, (Tile.PADDING, 0))
+
+        return surface
 
     def get_width(self):
         return Tile.PADDING_2 + self.words.get_width()
@@ -46,15 +52,19 @@ class Neighbours(Tile):
 
         self.words = Renderer.font.render('NEIGHBOURING', True, (0, 0, 0))
 
-    def render(self, renderer, x, y):
+    def render(self):
+
+        surface = Renderer.make_surface(self.get_width(), self.get_height())
 
         mp = self.get_height()//2
 
-        pygame.draw.rect(renderer.display, (170,0,210), (x, y, self.get_width(), self.get_height()))
+        surface.fill((170,0,210))
 
-        renderer.display.blit(self.words, (x+Tile.PADDING, y + mp - self.words.get_height()//2))
+        surface.blit(self.words, (Tile.PADDING, mp - self.words.get_height()//2))
 
-        self.slot.render(renderer, x + self.words.get_width() + Tile.PADDING_2, y + mp - self.slot.get_height()//2)
+        surface.blit(self.slot.render(), (self.words.get_width() + Tile.PADDING_2, mp - self.slot.get_height()//2))
+
+        return surface
 
 
     def get_width(self):

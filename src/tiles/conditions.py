@@ -1,5 +1,3 @@
-import pygame
-
 from .tile import Tile
 from src.stuff.tileSlot import TileSlot
 from src.utils.renderer import Renderer
@@ -12,20 +10,24 @@ class Equals(Tile):
 
         self.words = Renderer.font.render('=', True, (0, 0, 0))
 
-    def render(self, renderer, x, y):
+    def render(self):
+
+        surface = Renderer.make_surface(self.get_width(), self.get_height())
 
         mp = self.get_height()//2
         offset = Tile.PADDING
 
-        pygame.draw.rect(renderer.display, (255,0,0), (x, y, self.get_width(), self.get_height()))
+        surface.fill((255,0,0))
 
-        self.left_slot.render(renderer, x+offset, y + mp - self.left_slot.get_height()//2)
+        surface.blit(self.left_slot.render(), (offset, mp - self.left_slot.get_height()//2))
         offset += self.left_slot.get_width() + Tile.PADDING
 
-        renderer.display.blit(self.words, (x+offset, y + mp - self.words.get_height()//2))
+        surface.blit(self.words, (offset, mp - self.words.get_height()//2))
         offset += self.words.get_width() + Tile.PADDING
 
-        self.right_slot.render(renderer, x+offset, y + mp - self.right_slot.get_height()//2)
+        surface.blit(self.right_slot.render(), (offset, mp - self.right_slot.get_height()//2))
+
+        return surface
 
     def get_width(self):
         return Tile.PADDING * 4 + self.left_slot.get_width() + self.words.get_width() + self.right_slot.get_width()
@@ -44,26 +46,30 @@ class Clamp(Tile):
         self.l_words = Renderer.font.render('<=', True, (0, 0, 0))
         self.r_words = Renderer.font.render('<', True, (0, 0, 0))
 
-    def render(self, renderer, x, y):
+    def render(self):
+
+        surface = Renderer.make_surface(self.get_width(), self.get_height())
 
         mp = self.get_height()//2
         offset = Tile.PADDING
 
-        pygame.draw.rect(renderer.display, (255,0,0), (x, y, self.get_width(), self.get_height()))
+        surface.fill((255,0,0))
 
-        self.left_slot.render(renderer, x+offset, y + mp - self.left_slot.get_height()//2)
+        surface.blit(self.left_slot.render(), (offset, mp - self.left_slot.get_height()//2))
         offset += self.left_slot.get_width() + Tile.PADDING
 
-        renderer.display.blit(self.l_words, (x+offset, y + mp - self.l_words.get_height()//2))
+        surface.blit(self.l_words, (offset, mp - self.l_words.get_height()//2))
         offset += self.l_words.get_width() + Tile.PADDING
 
-        self.mid_slot.render(renderer, x+offset, y + mp - self.mid_slot.get_height()//2)
+        surface.blit(self.mid_slot.render(), (offset, mp - self.mid_slot.get_height()//2))
         offset += self.mid_slot.get_width() + Tile.PADDING
 
-        renderer.display.blit(self.r_words, (x+offset, y + mp - self.r_words.get_height()//2))
+        surface.blit(self.r_words, (offset, mp - self.r_words.get_height()//2))
         offset += self.r_words.get_width() + Tile.PADDING
 
-        self.right_slot.render(renderer, x+offset, y + mp - self.right_slot.get_height()//2)
+        surface.blit(self.right_slot.render(), (offset, mp - self.right_slot.get_height()//2))
+
+        return surface
 
     def get_width(self):
         return Tile.PADDING * 6 + self.left_slot.get_width() + self.l_words.get_width() + self.mid_slot.get_width() + self.r_words.get_width() + self.right_slot.get_width()

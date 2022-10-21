@@ -10,7 +10,7 @@ class Tile(ABC):
 
 
     @abstractmethod
-    def render(self, renderer, x, y):
+    def render(self):
         ...
 
     @abstractmethod

@@ -9,4 +9,4 @@ class TileHolder:
         self.tile = tile
 
     def render(self, renderer):
-        self.tile.render(renderer, self.x, self.y)
+        renderer.draw_image(self.tile.render(), self.x, self.y)

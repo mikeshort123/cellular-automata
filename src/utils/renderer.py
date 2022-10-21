@@ -5,7 +5,7 @@ class Renderer():
     def __init__(self, w, h):
 
         self.generate_screen(w, h)
-        Renderer.font = pygame.font.Font('freesansbold.ttf', 32)
+        Renderer.load_font()
 
 
     def generate_screen(self, w, h):
@@ -20,3 +20,11 @@ class Renderer():
     def clear_background(self):
 
         pygame.draw.rect(self.display, (0, 0, 0), (0, 0, self.display.get_width(), self.display.get_height()))
+
+    @staticmethod
+    def load_font():
+        Renderer.font = pygame.font.Font('freesansbold.ttf', 32)
+
+    @staticmethod
+    def make_surface(w, h):
+        return pygame.Surface((w, h), flags=pygame.SRCALPHA)
