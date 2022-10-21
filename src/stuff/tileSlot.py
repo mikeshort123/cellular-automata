@@ -30,3 +30,6 @@ class TileSlot:
 
     def add(self, tile):
         self.tile = tile
+
+    def get_json(self):
+        return self.tile.save_to_json() if self.tile else '{}'

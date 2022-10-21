@@ -24,6 +24,14 @@ class Const(Tile):
     def get_height(self):
         return Tile.BLANK_SLOT_H
 
+    @staticmethod
+    def build_from_json(data):
+        v = data['value']
+        return Const(v)
+
+    def save_to_json(self):
+        return f'{{"type" : "constant", "value" : {self.value}}}'
+
 
 class Value(Tile):
 
@@ -44,6 +52,14 @@ class Value(Tile):
 
     def get_height(self):
         return Tile.BLANK_SLOT_H
+
+    @staticmethod
+    def build_from_json(data):
+        return Value()
+
+    def save_to_json(self):
+        return f'{{"type" : "value"}}'
+
 
 class Neighbours(Tile):
 
@@ -72,3 +88,12 @@ class Neighbours(Tile):
 
     def get_height(self):
         return Tile.PADDING_2 + self.slot.get_height()
+
+    @staticmethod
+    def build_from_json(data):
+        neighbours = Neighbours()
+        if data['value']: neighbours.slot.add(Tile.whatever(data['value']))
+        return neighbours
+
+    def save_to_json(self):
+        return f'{{"type" : "neighbours", "value" : {self.slot.get_json()}}}'

@@ -60,3 +60,14 @@ class Iff(Tile):
 
     def get_height(self):
         return self.if_bar_height() + self.else_bar_height() + self.tt_slot.get_height() + self.ff_slot.get_height() + 2 * Iff.LOWER_SPACER_H
+
+    @staticmethod
+    def build_from_json(data):
+        iff = Iff()
+        if data['condition']: iff.cond_slot.add(Tile.whatever(data['condition']))
+        if data['tt']: iff.tt_slot.add(Tile.whatever(data['tt']))
+        if data['ff']: iff.ff_slot.add(Tile.whatever(data['ff']))
+        return iff
+
+    def save_to_json(self):
+        return f'{{"type" : "iff", "condition" : {self.cond_slot.get_json()}, "tt" : {self.tt_slot.get_json()}, "ff" : {self.ff_slot.get_json()}}}'

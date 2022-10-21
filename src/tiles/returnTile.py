@@ -28,3 +28,12 @@ class Return(Tile):
 
     def get_height(self):
         return Tile.PADDING_2 + self.slot.get_height()
+
+    @staticmethod
+    def build_from_json(data):
+        r = Return()
+        if data['value']: r.slot.add(Tile.whatever(data['value']))
+        return r
+
+    def save_to_json(self):
+        return f'{{"type" : "return", "value" : {self.slot.get_json()}}}'

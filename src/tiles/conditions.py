@@ -35,6 +35,16 @@ class Equals(Tile):
     def get_height(self):
         return Tile.PADDING_2 + max(self.left_slot.get_height(), self.right_slot.get_height())
 
+    @staticmethod
+    def build_from_json(data):
+        equals = Equals()
+        if data['left']: equals.left_slot.add(Tile.whatever(data['left']))
+        if data['right']: equals.right_slot.add(Tile.whatever(data['right']))
+        return equals
+
+    def save_to_json(self):
+        return f'{{"type" : "equals", "left" : {self.left_slot.get_json()}, "right" : {self.right_slot.get_json()}}}'
+
 
 class Clamp(Tile):
 
@@ -76,3 +86,14 @@ class Clamp(Tile):
 
     def get_height(self):
         return Tile.PADDING_2 + max(self.left_slot.get_height(), self.mid_slot.get_height(), self.right_slot.get_height())
+
+    @staticmethod
+    def build_from_json(data):
+        clamp = Clamp()
+        if data['left']: clamp.left_slot.add(Tile.whatever(data['left']))
+        if data['middle']: clamp.mid_slot.add(Tile.whatever(data['middle']))
+        if data['right']: clamp.right_slot.add(Tile.whatever(data['right']))
+        return clamp
+
+    def save_to_json(self):
+        return f'{{"type" : "clamp", "left" : {self.left_slot.get_json()}, "middle" : {self.mid_slot.get_json()}, "right" : {self.right_slot.get_json()}}}'
