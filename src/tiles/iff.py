@@ -1,5 +1,6 @@
 from .tile import Tile
-from src.stuff.tileSlot import TileSlot
+from src.stuff.tileSlot import StatementSlot
+from src.stuff.tileSlot import ConditionSlot
 from src.utils.renderer import Renderer
 
 class Iff(Tile):
@@ -9,9 +10,9 @@ class Iff(Tile):
 
 
     def __init__(self):
-        self.cond_slot = TileSlot(Tile.BLANK_SLOT_W, Tile.BLANK_SLOT_H, (0, 180, 0))
-        self.tt_slot = TileSlot(76, 10, (0, 180, 0))
-        self.ff_slot = TileSlot(76, 10, (0, 180, 0))
+        self.cond_slot = ConditionSlot(Tile.BLANK_SLOT_W, Tile.BLANK_SLOT_H, (0, 180, 0))
+        self.tt_slot = StatementSlot(76, 10, (0, 180, 0))
+        self.ff_slot = StatementSlot(76, 10, (0, 180, 0))
 
         self.if_text = Renderer.font.render('IF', True, (0, 0, 0))
         self.else_text = Renderer.font.render('ELSE', True, (0, 0, 0))
@@ -71,3 +72,19 @@ class Iff(Tile):
 
     def save_to_json(self):
         return f'{{"type" : "iff", "condition" : {self.cond_slot.get_json()}, "tt" : {self.tt_slot.get_json()}, "ff" : {self.ff_slot.get_json()}}}'
+
+    def generate_update_function(self):
+
+        cond = self.cond_slot.generate_check_function()
+        tt = self.tt_slot.generate_update_function()
+        ff = self.ff_slot.generate_update_function()
+
+        def update(state, x, y):
+
+            if cond(state, x, y):
+                return tt(state, x, y)
+
+            else:
+                return ff(state, x, y)
+
+        return update

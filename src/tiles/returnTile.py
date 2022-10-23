@@ -1,11 +1,12 @@
 from .tile import Tile
 from src.stuff.tileSlot import TileSlot
+from src.stuff.tileSlot import ValueSlot
 from src.utils.renderer import Renderer
 
 class Return(Tile):
 
     def __init__(self):
-        self.slot = TileSlot(Tile.BLANK_SLOT_W, Tile.BLANK_SLOT_H, (0, 180, 180))
+        self.slot = ValueSlot(Tile.BLANK_SLOT_W, Tile.BLANK_SLOT_H, (0, 180, 180))
 
         self.words = Renderer.font.render('RETURN', True, (0, 0, 0))
 
@@ -37,3 +38,13 @@ class Return(Tile):
 
     def save_to_json(self):
         return f'{{"type" : "return", "value" : {self.slot.get_json()}}}'
+
+    def generate_update_function(self):
+
+        val = self.slot.generate_get_function()
+
+        def update(state, x, y):
+
+            return val(state, x, y)
+
+        return update

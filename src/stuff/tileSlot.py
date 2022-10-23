@@ -33,3 +33,19 @@ class TileSlot:
 
     def get_json(self):
         return self.tile.save_to_json() if self.tile else '{}'
+
+
+class StatementSlot(TileSlot):
+
+    def generate_update_function(self):
+        return self.tile.generate_update_function()
+
+class ConditionSlot(TileSlot):
+
+    def generate_check_function(self):
+        return self.tile.generate_check_function()
+
+class ValueSlot(TileSlot):
+
+    def generate_get_function(self):
+        return self.tile.generate_get_function()

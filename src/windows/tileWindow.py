@@ -30,6 +30,8 @@ class TileWindow:
 
         iff_1 = Tile.whatever(data)
 
+        self.update_function = iff_1.generate_update_function()
+
 
         self.tiles = [
             TileHolder(100, 100, iff_1)

@@ -11,7 +11,7 @@ class Grid:
 
     def get(self, x, y):
 
-        if 0 <= x < self.W or 0 <= y < self.H:
+        if 0 <= x < self.W and 0 <= y < self.H:
             return self.current_state[x, y]
 
         return 0

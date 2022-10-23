@@ -1,12 +1,12 @@
 from .tile import Tile
-from src.stuff.tileSlot import TileSlot
+from src.stuff.tileSlot import ValueSlot
 from src.utils.renderer import Renderer
 
 class Equals(Tile):
 
     def __init__(self):
-        self.left_slot = TileSlot(Tile.BLANK_SLOT_W, Tile.BLANK_SLOT_H, (180, 0, 0))
-        self.right_slot = TileSlot(Tile.BLANK_SLOT_W, Tile.BLANK_SLOT_H, (180, 0, 0))
+        self.left_slot = ValueSlot(Tile.BLANK_SLOT_W, Tile.BLANK_SLOT_H, (180, 0, 0))
+        self.right_slot = ValueSlot(Tile.BLANK_SLOT_W, Tile.BLANK_SLOT_H, (180, 0, 0))
 
         self.words = Renderer.font.render('=', True, (0, 0, 0))
 
@@ -45,13 +45,26 @@ class Equals(Tile):
     def save_to_json(self):
         return f'{{"type" : "equals", "left" : {self.left_slot.get_json()}, "right" : {self.right_slot.get_json()}}}'
 
+    def generate_check_function(self):
+
+        l = self.left_slot.generate_get_function()
+        r = self.right_slot.generate_get_function()
+
+        def check(state, x ,y):
+
+            return l(state, x, y) == r(state, x, y)
+
+        return check
+
+
+
 
 class Clamp(Tile):
 
     def __init__(self):
-        self.left_slot = TileSlot(Tile.BLANK_SLOT_W, Tile.BLANK_SLOT_H, (180, 0, 0))
-        self.mid_slot = TileSlot(Tile.BLANK_SLOT_W, Tile.BLANK_SLOT_H, (180, 0, 0))
-        self.right_slot = TileSlot(Tile.BLANK_SLOT_W, Tile.BLANK_SLOT_H, (180, 0, 0))
+        self.left_slot = ValueSlot(Tile.BLANK_SLOT_W, Tile.BLANK_SLOT_H, (180, 0, 0))
+        self.mid_slot = ValueSlot(Tile.BLANK_SLOT_W, Tile.BLANK_SLOT_H, (180, 0, 0))
+        self.right_slot = ValueSlot(Tile.BLANK_SLOT_W, Tile.BLANK_SLOT_H, (180, 0, 0))
 
         self.l_words = Renderer.font.render('<=', True, (0, 0, 0))
         self.r_words = Renderer.font.render('<', True, (0, 0, 0))
@@ -97,3 +110,16 @@ class Clamp(Tile):
 
     def save_to_json(self):
         return f'{{"type" : "clamp", "left" : {self.left_slot.get_json()}, "middle" : {self.mid_slot.get_json()}, "right" : {self.right_slot.get_json()}}}'
+
+
+    def generate_check_function(self):
+
+        l = self.left_slot.generate_get_function()
+        m = self.mid_slot.generate_get_function()
+        r = self.right_slot.generate_get_function()
+
+        def check(state, x, y):
+
+            return l(state, x, y) <= m(state, x, y) < r(state, x, y)
+
+        return check

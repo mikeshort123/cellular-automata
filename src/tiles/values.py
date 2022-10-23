@@ -1,5 +1,5 @@
 from .tile import Tile
-from src.stuff.tileSlot import TileSlot
+from src.stuff.tileSlot import ValueSlot
 from src.utils.renderer import Renderer
 
 class Const(Tile):
@@ -32,6 +32,14 @@ class Const(Tile):
     def save_to_json(self):
         return f'{{"type" : "constant", "value" : {self.value}}}'
 
+    def generate_get_function(self):
+
+        def get(state, x, y):
+
+            return self.value
+
+        return get
+
 
 class Value(Tile):
 
@@ -61,10 +69,19 @@ class Value(Tile):
         return f'{{"type" : "value"}}'
 
 
+    def generate_get_function(self):
+
+        def get(state, x, y):
+
+            return state.get(x, y)
+
+        return get
+
+
 class Neighbours(Tile):
 
     def __init__(self):
-        self.slot = TileSlot(Tile.BLANK_SLOT_W, Tile.BLANK_SLOT_H, (100, 0, 130))
+        self.slot = ValueSlot(Tile.BLANK_SLOT_W, Tile.BLANK_SLOT_H, (100, 0, 130))
 
         self.words = Renderer.font.render('NEIGHBOURING', True, (0, 0, 0))
 
@@ -97,3 +114,24 @@ class Neighbours(Tile):
 
     def save_to_json(self):
         return f'{{"type" : "neighbours", "value" : {self.slot.get_json()}}}'
+
+    def generate_get_function(self):
+
+        target = self.slot.generate_get_function()
+
+        def get(state, x, y):
+
+            offsets = (
+                (1, 0),
+                (1, 1),
+                (0, 1),
+                (-1, 1),
+                (-1, 0),
+                (-1, -1),
+                (0, -1),
+                (1, -1)
+            )
+
+            return sum([1 for dx, dy in offsets if state.get(x+dx, y+dy) == target(state, x, y)])
+
+        return get
