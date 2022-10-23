@@ -38,7 +38,6 @@ class Tile(ABC):
     def build_from_json(data):
         ...
 
-    @staticmethod
     @abstractmethod
     def save_to_json():
         ...
