@@ -4,11 +4,14 @@ from src.cells.grid import Grid
 
 class CellWindow:
 
-    def __init__(self, x, y):
+    def __init__(self, handler, x, y):
 
         self.grid = Grid(x, y)
         self.running = False
         self.update_function = None
+
+        handler.register_event('KEYDOWN_mb1', self.increment_cell)
+        handler.register_event('KEYDOWN_mb3', self.reset_cell)
 
     def render(self, renderer, colours, scl):
 
@@ -20,14 +23,24 @@ class CellWindow:
 
     def tick(self):
 
-        if pygame.mouse.get_pressed()[0]:
-            pos = pygame.mouse.get_pos()
-            x, y = pos[0] // 10, pos[1] // 10
-            self.grid.set_current(x, y, 1)
-        if pygame.mouse.get_pressed()[2]:
-            pos = pygame.mouse.get_pos()
-            x, y = pos[0] // 10, pos[1] // 10
-            self.grid.set_current(x, y, 0)
-
         if self.running:
             self.grid.update(self.update_function)
+
+
+    def increment_cell(self):
+
+        x, y = self.get_screen_mouse_pos()
+        v = self.grid.get(x, y)
+        v += 1
+        v %= 4
+        self.grid.set_current(x, y, v)
+
+    def reset_cell(self):
+
+        x, y = self.get_screen_mouse_pos()
+        self.grid.set_current(x, y, 0)
+
+
+    def get_screen_mouse_pos(self):
+        x, y = pygame.mouse.get_pos()
+        return x // 10, y // 10

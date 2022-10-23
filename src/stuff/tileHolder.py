@@ -1,4 +1,4 @@
-
+import pygame
 
 class TileHolder:
 
@@ -9,4 +9,6 @@ class TileHolder:
         self.tile = tile
 
     def render(self, renderer):
-        renderer.draw_image(self.tile.render(), self.x, self.y)
+        img = self.tile.render()
+        img = pygame.transform.scale(img, (img.get_width()//3, img.get_height()//3))
+        renderer.draw_image(img, self.x, self.y)

@@ -14,7 +14,7 @@ from src.tiles.values import Neighbours
 
 class TileWindow:
 
-    def __init__(self):
+    def __init__(self, handler):
 
         Tile.register_tile(Iff, 'iff')
         Tile.register_tile(Return, 'return')
@@ -25,7 +25,7 @@ class TileWindow:
         Tile.register_tile(Neighbours, 'neighbours')
 
 
-        with open('res/life.json') as f:
+        with open('res/wireworld.json') as f:
             data = json.load(f)
 
         iff_1 = Tile.whatever(data)
@@ -41,7 +41,7 @@ class TileWindow:
         #    f.write(iff_1.save_to_json())
 
 
-    def tick(self, handler):
+    def tick(self):
         return
 
     def render(self, renderer):

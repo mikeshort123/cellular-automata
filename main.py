@@ -26,12 +26,16 @@ class Main():
         handler = Handler()
         renderer = Renderer(self.MAXX, self.MAXY)
 
-        tw = TileWindow()
-        cw = CellWindow(64, 48)
+        tw = TileWindow(handler)
+        cw = CellWindow(handler, 64, 48)
+
+        active = False
 
         colours = [
             (0, 0, 0),
-            (255, 255, 255)
+            (255, 255, 0),
+            (0, 0, 255),
+            (255, 0, 0)
         ]
 
         cw.update_function = tw.update_function
@@ -48,6 +52,9 @@ class Main():
 
                 if event.type == pygame.KEYDOWN:
 
+                    if event.key == 32:
+                        active = not active
+
                     if event.key == 13:
                         cw.running = not cw.running
 
@@ -56,14 +63,15 @@ class Main():
 
             renderer.clear_background()
 
-            cw.tick()
-            cw.render(renderer, colours, 10)
+            if active:
+                cw.tick()
+                cw.render(renderer, colours, 10)
 
-            tw.tick(handler)
-            tw.render(renderer)
+            else:
+                tw.tick()
+                tw.render(renderer)
 
 
-            handler.reset()
             pygame.display.update()
             clock.tick(60)
 
